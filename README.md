@@ -1,5 +1,9 @@
-# A few functions that benefited from being written in native code...
+# nativebb optimises a few brainbow operations (C/OpenMP) 
 
-* isinside(): Given a list of 2-D points and a polygon, returns a truth table of whether the points are outside or inside the polygon
-* dedupcol(): Given an R,G,B arrays of values, returns an array of unique R,G,B values
-* dedupcol_indexes(): Given an R,G,B arrays of values, returns an array of indexes of the unique R,G,B values
+These functions help speed-up some operations required by libbrainbow.
+
+For now the following (optimized) functions are available:
+
+* **dedupcol()** and **dedupcol__indexes()** finds unique triplet colours in a (n x 3) array. Then returns either a new (m x 3) array or a (m x 1) array of unique indexes.
+* **isinside()** takes an array of (n x 2) points, an array of (n x 2) points defining a closed polygon and returns a (m x 1) array of the indexes of the points inside the polygon.
+
