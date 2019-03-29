@@ -79,7 +79,7 @@ void dedupcol_safe(
         uint16_t *ArrayR, int ZdimR, int YdimR, int XdimR,
         uint16_t *ArrayG, int ZdimG, int YdimG, int XdimG,
         uint16_t *ArrayB, int ZdimB, int YdimB, int XdimB,
-        int input_bit, int output_bit,
+        int input_bit, int output_bit, int threshold, 
         uint16_t **ArrayOut, int *YdimOut, int *XdimOut)
 {
 
@@ -94,7 +94,7 @@ void dedupcol_safe(
         ArrayR, _ZdimR, _YdimR, XdimR,
         ArrayG, _ZdimG, _YdimG, XdimG,
         ArrayB, _ZdimB, _YdimB, XdimB,
-        input_bit, output_bit,
+        input_bit, output_bit, threshold, 
         ArrayOut, YdimOut, XdimOut);
 }
 
@@ -102,7 +102,7 @@ void dedupcol_indexes_safe(
         uint16_t *ArrayR, int ZdimR, int YdimR, int XdimR,
         uint16_t *ArrayG, int ZdimG, int YdimG, int XdimG,
         uint16_t *ArrayB, int ZdimB, int YdimB, int XdimB,
-        int input_bit, int output_bit,
+        int input_bit, int output_bit, int threshold,
         uint64_t **ArrayOut, int *NdimOut)
 {
 
@@ -117,7 +117,7 @@ void dedupcol_indexes_safe(
         ArrayR, _ZdimR, _YdimR, XdimR,
         ArrayG, _ZdimG, _YdimG, XdimG,
         ArrayB, _ZdimB, _YdimB, XdimB,
-        input_bit, output_bit,
+        input_bit, output_bit, threshold, 
         ArrayOut, NdimOut);
 }
 

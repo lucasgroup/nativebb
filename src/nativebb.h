@@ -28,12 +28,12 @@ void dedupcol(
         uint16_t *ArrayR, int ZdimR, int YdimR, int XdimR,
         uint16_t *ArrayG, int ZdimG, int YdimG, int XdimG,
         uint16_t *ArrayB, int ZdimB, int YdimB, int XdimB,
-        int input_bit, int output_bit,
+        int input_bit, int output_bit, int threshold,
         uint16_t **ArrayOut, int *YdimOut, int *XdimOut);
 
 void dedupcol_indexes(
         uint16_t *ArrayR, int ZdimR, int YdimR, int XdimR,
         uint16_t *ArrayG, int ZdimG, int YdimG, int XdimG,
         uint16_t *ArrayB, int ZdimB, int YdimB, int XdimB,
-        int input_bit, int output_bit,
+        int input_bit, int output_bit, int threshold,
         uint64_t **ArrayOut, int *NdimOut);

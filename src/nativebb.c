@@ -82,7 +82,7 @@ void dedupcol(
         uint16_t *ArrayR, int ZdimR, int YdimR, int XdimR,
         uint16_t *ArrayG, int ZdimG, int YdimG, int XdimG,
         uint16_t *ArrayB, int ZdimB, int YdimB, int XdimB,
-        int input_bit, int output_bit,
+        int input_bit, int output_bit, int threshold,
         uint16_t **ArrayOut, int *YdimOut, int *XdimOut)
 {
     uint64_t i,j,n=0;
@@ -126,15 +126,17 @@ void dedupcol(
         //construct the rgb signature
         signature = temp_r | (temp_g << output_bit) | (temp_b << (output_bit*2));
 
+        /*
         if (truth[signature] == 1)
             continue;
+        */
 
         if (signature > max_signature) {
             max_signature = signature;
         }
 
         //printf("signature=%d max_sig=%d\n",signature,max_signature);
-        truth[signature] = 1;
+        truth[signature] += 1;
     }
 
     //we need to count the total number of hits, this is to determine the size of the output array (nx3).
@@ -143,7 +145,7 @@ void dedupcol(
         default(shared) reduction( + : n )
 
     for (i=0; i<=max_signature; i++) {
-        if (truth[i] > 0)
+        if (truth[i] > threshold)
             n++;
     }
 
@@ -162,7 +164,7 @@ void dedupcol(
     j = 0;
     for (i=0; i<=max_signature; i++)
     {
-        if (truth[i] > 0)
+        if (truth[i] > threshold)
         {
             //printf("i=%d j=%d truth[i]=%d\n",i,j,truth[i]);
             temp_r = i & signature;
@@ -189,7 +191,7 @@ void dedupcol_indexes(
         uint16_t *ArrayR, int ZdimR, int YdimR, int XdimR,
         uint16_t *ArrayG, int ZdimG, int YdimG, int XdimG,
         uint16_t *ArrayB, int ZdimB, int YdimB, int XdimB,
-        int input_bit, int output_bit,
+        int input_bit, int output_bit, int threshold,
         uint64_t **ArrayOut, int *NdimOut)
 {
     uint64_t i,j,n=0;
@@ -235,14 +237,16 @@ void dedupcol_indexes(
         //construct the rgb signature
         signature = temp_r | (temp_g << output_bit) | (temp_b << (output_bit*2));
 
+        /*
         if (truth[signature] == 1)
             continue;
+        */
 
         if (signature > max_signature) {
             max_signature = signature;
         }
 
-        truth[signature] = 1;
+        truth[signature] += 1;
         truth_index[signature] = i;
         //printf("signature=%d max_sig=%d i=%d truth_index[signature]=%d\n",signature,max_signature,i, truth_index[signature]);
     }
@@ -253,7 +257,7 @@ void dedupcol_indexes(
         default(shared) reduction( + : n )
 
     for (i=0; i<=max_signature; i++) {
-        if (truth[i] > 0)
+        if (truth[i] > threshold)
             n++;
     }
 
@@ -269,7 +273,7 @@ void dedupcol_indexes(
     j = 0;
     for (i=0; i<=max_signature; i++)
     {
-        if (truth[i] > 0)
+        if (truth[i] > threshold)
         {
             //printf("i=%d j=%d truth[i]=%d truth_index[i]=%d\n",i,j,truth[i],truth_index[i]);
             decomp[j] = truth_index[i];
