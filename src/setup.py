@@ -161,9 +161,9 @@ class build_ext(_build_ext):
                 with open(fn, 'w') as fh:
                     fh.write(version_msg + os.linesep + '__version__ = \'' + version +'\'')
 
-# atrous extension module
-_extension = Extension('_libatrous',
-                   ['libatrous.i','matalloc.c','libatrous.c'],
+# brainbow extension module
+_extension = Extension('_nativebb',
+                   ['nativebb.i','nativebb.c'],
                    include_dirs = [numpy_include],
 
                    extra_compile_args = ['--verbose','-march=native','-O3','-ftree-vectorizer-verbose=2','-ffast-math'],
@@ -193,25 +193,27 @@ classifiers = [
   'Programming Language :: Python',
   'Programming Language :: Python :: 2',
   'Programming Language :: Python :: 2.7',
+  'Programming Language :: Python :: 3',
+  'Programming Language :: Python :: 3.7',
   'Topic :: Software Development',
   'Topic :: Scientific/Engineering',
   'Operating System :: Microsoft :: Windows',
   'Operating System :: POSIX',
   'Operating System :: Unix',
   'Natural Language :: English',
-  'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
+  'License :: OSI Approved :: Apache Software License',
 ]
 
 # NumyTypemapTests setup
 setup(
-    name                  = 'libatrous',
+    name                  = 'nativebb',
     #version               = read('../VERSION.txt', default='0.0.1').strip(),
     version               = git_version(),
     classifiers           = classifiers,
     description           = 'Atrous wavelet library (1d, 2d, 3d)',
     long_description      = read('../README.md'),
-    url                   = 'https://github.com/zindy/libatrous',
-    keywords              = 'python imaging atrous wavelet microscopy',
+    url                   = 'https://github.com/lucasgroup/nativebb',
+    keywords              = 'python imaging brainbow',
     author                = 'Egor Zindy',
     author_email          = 'ezindy@gmail.com',
     packages              = find_packages(),
@@ -220,9 +222,9 @@ setup(
     zip_safe              = True,
     #install_requires      = dependencies,
     #tests_require         = test_dependencies,
-    #test_suite            = 'libatrous',
+    #test_suite            = 'nativebb',
     entry_points          = entrypoints,
-    license               = 'LGPLv3+',
+    license               = 'Apache',
 
     ext_modules  = [_extension],
     cmdclass = { 'build_ext': build_ext},
