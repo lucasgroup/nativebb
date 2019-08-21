@@ -29,6 +29,9 @@ if sys.version_info[0] >= 3:
 else:
     import __builtin__ as builtins
 
+# Change the local path so setup.py can be called from a different directory.
+os.chdir(os.path.split(sys.argv[0])[0])
+
 # Obtain the numpy include directory.  This logic works across numpy versions.
 try:
     numpy_include = numpy.get_include()
@@ -112,10 +115,10 @@ class build_ext(_build_ext):
     def run(self):
         # Start classic Extension build
         _build_ext.run(self)
-        print "==="
-        print self.distribution.metadata.version
-        #print self.distribution.metadata.release
-        print "==="
+        print("===")
+        print(self.distribution.metadata.version)
+        #print(self.distribution.metadata.release)
+        print("===")
         # 1. Rename the swig generated .py file to __init__.py
         #
         # 2. if not inplace, additionally move all the files to
@@ -136,6 +139,7 @@ class build_ext(_build_ext):
                 if self.inplace:
                     os.remove(fn)
                     build_dir = source_dir
+                    fn = name+'.py'
                 else:
                     build_dir = os.path.join(self.build_lib,name)
                     if not os.path.exists(build_dir):
@@ -144,11 +148,10 @@ class build_ext(_build_ext):
                     fn_old = self.get_ext_fullpath(ext.name)
                     fn_new = os.path.join(build_dir,
                         os.path.split(fn_old)[1])
-                    if os.path.exists(fn_new):
-                        os.remove(fn_new)
                     os.rename(fn_old,fn_new)
+                    fn = '__init__.py'
 
-                fn = os.path.join(build_dir,'__init__.py')
+                fn = os.path.join(build_dir,fn)
                 with open(fn,'w') as f:
                     f.writelines(lines)
 
@@ -158,9 +161,9 @@ class build_ext(_build_ext):
                 with open(fn, 'w') as fh:
                     fh.write(version_msg + os.linesep + '__version__ = \'' + version +'\'')
 
-# brainbow extension module
-_extension = Extension('_nativebb',
-                   ['nativebb.i','nativebb.c'],
+# atrous extension module
+_extension = Extension('_libatrous',
+                   ['libatrous.i','matalloc.c','libatrous.c'],
                    include_dirs = [numpy_include],
 
                    extra_compile_args = ['--verbose','-march=native','-O3','-ftree-vectorizer-verbose=2','-ffast-math'],
@@ -196,30 +199,30 @@ classifiers = [
   'Operating System :: POSIX',
   'Operating System :: Unix',
   'Natural Language :: English',
-  'License :: OSI Approved :: Apache Software License',
+  'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
 ]
 
 # NumyTypemapTests setup
 setup(
-    name                  = 'nativebb',
+    name                  = 'libatrous',
     #version               = read('../VERSION.txt', default='0.0.1').strip(),
     version               = git_version(),
-    license               = 'Apache Software License 2.0',
-    description           = 'Brainbow helper functions',
-    long_description      = read('../README.md'),
     classifiers           = classifiers,
-    url                   = 'https://github.com/zindy/nativebb',
-    keywords              = 'python imaging brainbow microscopy',
+    description           = 'Atrous wavelet library (1d, 2d, 3d)',
+    long_description      = read('../README.md'),
+    url                   = 'https://github.com/zindy/libatrous',
+    keywords              = 'python imaging atrous wavelet microscopy',
     author                = 'Egor Zindy',
-    author_email          = 'egor.zindy@manchester.ac.uk',
+    author_email          = 'ezindy@gmail.com',
     packages              = find_packages(),
     platforms             = ['any'],
     include_package_data  = True,
     zip_safe              = True,
     #install_requires      = dependencies,
     #tests_require         = test_dependencies,
-    #test_suite            = 'nativebb',
+    #test_suite            = 'libatrous',
     entry_points          = entrypoints,
+    license               = 'LGPLv3+',
 
     ext_modules  = [_extension],
     cmdclass = { 'build_ext': build_ext},
